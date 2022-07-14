@@ -59,10 +59,10 @@ public class Pedidos extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 3, 36)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Pedidos");
 
-        jLabel2.setText("Producto");
+        jLabel2.setText("Productos");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -110,7 +110,7 @@ public class Pedidos extends javax.swing.JFrame {
                         .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(46, 46, 46))))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(228, 228, 228)
                 .addComponent(jLabel1)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -141,17 +141,17 @@ public class Pedidos extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jLabel5.setText("Tamanos");
+        jLabel5.setText("Tamaños");
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel6.setText("Talas");
+        jLabel6.setText("Tallas");
 
         jLabel7.setText("Cantidad");
 
-        jLabel8.setText("Colo");
+        jLabel8.setText("Color");
 
         jButton2.setText("Guardar");
 
@@ -213,7 +213,7 @@ public class Pedidos extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jLabel9.setText("Linea de pedido");
+        jLabel9.setText("Línea de pedido");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
