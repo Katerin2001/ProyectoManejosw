@@ -5,6 +5,13 @@
  */
 package proyectomanejosw;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Erik
@@ -95,6 +102,11 @@ public class RegistroClientes extends javax.swing.JFrame {
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/comprobado.png"))); // NOI18N
         jButton2.setText("Registrar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -198,6 +210,12 @@ public class RegistroClientes extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        guardarClientes();
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -254,4 +272,48 @@ public class RegistroClientes extends javax.swing.JFrame {
     private javax.swing.JTextField jtxtUsuarioCliente;
     private javax.swing.JPasswordField jtxtpswContrasenaUsuario;
     // End of variables declaration//GEN-END:variables
+
+    private void guardarClientes() {
+        try {
+            String cedula, nombre, apellido, telefono, direccion, usuario, contrasena;
+            Conexion cn = new Conexion();
+            Connection cc = cn.conectar();
+            cn.conectar();
+            cedula = jtxtCedulaCliente.getText();
+            nombre = jtxtNombresCliente.getText();
+            apellido = jtxtApellidosClientes.getText();
+            direccion = jtxtDireccionCliente.getText();
+            telefono = jtxtTelefonoCliente.getText();
+            usuario = jtxtUsuarioCliente.getText();
+            contrasena = jtxtpswContrasenaUsuario.getText();
+            //sentencias sql: dll ,psql,
+            //    String sql="insert into estudiantes(est_cedula,est_nombre,est_apellido,est_telefono,est_direccion) values(?,?,?,?,?) ";
+            String sql = "insert into clientes values(?,?,?,?,?,?,?)";
+            PreparedStatement psd = cc.prepareStatement(sql);
+            psd.setString(1, cedula);
+            psd.setString(2, nombre);
+            psd.setString(3, apellido);
+            psd.setString(4, telefono);
+            psd.setString(5, direccion);
+            psd.setString(6, usuario);
+            psd.setString(7, contrasena);
+            int n = psd.executeUpdate();
+            if (n > 0) {
+                limpiarTextos();
+                JOptionPane.showMessageDialog(null, "Se ha insertado correctamente los valores en la base de datos");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(RegistroClientes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void limpiarTextos() {
+        jtxtApellidosClientes.setText("");
+        jtxtCedulaCliente.setText("");
+        jtxtDireccionCliente.setText("");
+        jtxtNombresCliente.setText("");
+        jtxtTelefonoCliente.setText("");
+        jtxtUsuarioCliente.setText("");
+        jtxtpswContrasenaUsuario.setText("");
+    }
 }
