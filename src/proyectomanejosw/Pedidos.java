@@ -6,6 +6,7 @@
 package proyectomanejosw;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,19 +17,23 @@ public class Pedidos extends javax.swing.JFrame {
     /**
      * Creates new form Pedidos
      */
-    
-     DefaultComboBoxModel modelosCB;
+    DefaultComboBoxModel modelosCB;
     DefaultComboBoxModel productosCB;
     DefaultComboBoxModel tallasp;
+
+    int restaAmarillo = 0;
+    int restaAzul = 0;
+    int restaRojo = 0;
+    int estado = 0;
+
     public Pedidos() {
         initComponents();
-         modelosCB = new DefaultComboBoxModel();
+        modelosCB = new DefaultComboBoxModel();
         productosCB = new DefaultComboBoxModel();
         tallasp = new DefaultComboBoxModel();
         cargarCombobox();
     }
 
-    
     public void cargarCombobox() {
         String[] modelo = {"Amarillo", "Azul", "Rojo"};
         for (String i : modelo) {
@@ -49,6 +54,47 @@ public class Pedidos extends javax.swing.JFrame {
         jcbxTallas.setModel(tallasp);
 
     }
+
+    public boolean validarProductos(boolean logico) {
+        int cantAmarillo = 0;
+        int cantAzul = 0;
+        int cantRojo = 0;
+        int suma;
+        int valorSpiner = Integer.valueOf(jspnCantidad.getValue().toString());
+        System.out.println(valorSpiner);
+        try {
+            if (jchbAmarillo.isSelected()) {
+                cantAmarillo = Integer.valueOf(jtxtAmarillo.getText());
+                restaAmarillo = cantAmarillo;
+//                setRestaAmarillo(restaAmarillo);
+
+            }
+            if (jchbAzul.isSelected()) {
+                cantAzul = Integer.valueOf(jtxtAzul.getText());
+                restaAzul = cantAzul;
+            }
+            if (jchbRojo.isSelected()) {
+                cantRojo = Integer.valueOf(jtxtRojo.getText());
+                restaRojo = cantRojo;
+
+            }
+
+            suma = cantAmarillo + cantAzul + cantRojo;
+
+            if (valorSpiner != suma) {
+                JOptionPane.showMessageDialog(this, "La suma de colores no coincide con la cantidad del producto");
+                return false;
+            }
+//            limpiarBloquearPedidos();
+            JOptionPane.showMessageDialog(this,"Validación correcta");
+            return true;
+        } catch (Exception e) {
+        }
+        return true;
+        //if(Integer.valueOf(jspnCantidad.getValue().toString())){
+        //} else {
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -63,15 +109,16 @@ public class Pedidos extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jcbxProductos = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        jspnCantidad = new javax.swing.JSpinner();
         jLabel4 = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        jchbAmarillo = new javax.swing.JCheckBox();
+        jchbAzul = new javax.swing.JCheckBox();
+        jchbRojo = new javax.swing.JCheckBox();
+        jtxtAmarillo = new javax.swing.JTextField();
+        jtxtAzul = new javax.swing.JTextField();
+        jtxtRojo = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
+        jbtnAceptar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jcbxTallas = new javax.swing.JComboBox<>();
@@ -105,11 +152,20 @@ public class Pedidos extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel4.setText("Colores:");
 
-        jCheckBox1.setText("Amarillo");
+        jchbAmarillo.setText("Amarillo");
 
-        jCheckBox2.setText("Azul");
+        jchbAzul.setText("Azul");
 
-        jCheckBox3.setText("Rojo");
+        jchbRojo.setText("Rojo");
+
+        jbtnAceptar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jbtnAceptar.setIcon(new javax.swing.ImageIcon("D:\\Programacion\\Programacion3\\ProyectoManejosw\\src\\image\\comprobado.png")); // NOI18N
+        jbtnAceptar.setText("Validar");
+        jbtnAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnAceptarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -129,23 +185,26 @@ public class Pedidos extends javax.swing.JFrame {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jcbxProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(36, 36, 36)
-                                        .addComponent(jLabel3))
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jCheckBox1)
-                                                .addComponent(jCheckBox2)
-                                                .addComponent(jCheckBox3))
-                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                                    .addGap(29, 29, 29)
-                                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                                .addGap(18, 18, 18)
-                                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jLabel3)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jspnCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jtxtAzul, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jchbAmarillo)
+                                                    .addComponent(jchbAzul)
+                                                    .addComponent(jchbRojo))
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                                        .addGap(29, 29, 29)
+                                                        .addComponent(jtxtAmarillo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(jtxtRojo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jbtnAceptar))))
                             .addComponent(jLabel1))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -162,20 +221,21 @@ public class Pedidos extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(jcbxProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jspnCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jchbAmarillo)
+                    .addComponent(jtxtAmarillo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jchbAzul)
+                    .addComponent(jtxtAzul, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jchbRojo)
+                    .addComponent(jtxtRojo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -322,7 +382,7 @@ public class Pedidos extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 134, Short.MAX_VALUE))
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -331,6 +391,11 @@ public class Pedidos extends javax.swing.JFrame {
     private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField4ActionPerformed
+
+    private void jbtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAceptarActionPerformed
+        // TODO add your handling code here:
+        validarProductos(true);
+    }//GEN-LAST:event_jbtnAceptarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -372,9 +437,6 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -390,14 +452,18 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
+    private javax.swing.JButton jbtnAceptar;
     private javax.swing.JComboBox<String> jcbxColor;
     private javax.swing.JComboBox<String> jcbxProductos;
     private javax.swing.JComboBox<String> jcbxTallas;
+    private javax.swing.JCheckBox jchbAmarillo;
+    private javax.swing.JCheckBox jchbAzul;
+    private javax.swing.JCheckBox jchbRojo;
+    private javax.swing.JSpinner jspnCantidad;
+    private javax.swing.JTextField jtxtAmarillo;
+    private javax.swing.JTextField jtxtAzul;
+    private javax.swing.JTextField jtxtRojo;
     // End of variables declaration//GEN-END:variables
 }
