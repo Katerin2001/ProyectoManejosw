@@ -7,6 +7,7 @@ package proyectomanejosw;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.SpinnerNumberModel;
 
 /**
  *
@@ -20,7 +21,7 @@ public class Pedidos extends javax.swing.JFrame {
     DefaultComboBoxModel modelosCB;
     DefaultComboBoxModel productosCB;
     DefaultComboBoxModel tallasp;
-
+    SpinnerNumberModel modeloSpinner;
     int restaAmarillo = 0;
     int restaAzul = 0;
     int restaRojo = 0;
@@ -31,7 +32,40 @@ public class Pedidos extends javax.swing.JFrame {
         modelosCB = new DefaultComboBoxModel();
         productosCB = new DefaultComboBoxModel();
         tallasp = new DefaultComboBoxModel();
+        modeloSpinner = new SpinnerNumberModel();
+        limiteSpiner();
         cargarCombobox();
+        selecionBloqueada();
+        bloquearTamaños();
+        desbloquearAceptarProductos();
+    }
+ public void limiteSpiner() {
+
+        modeloSpinner.setMaximum(100);
+        modeloSpinner.setMinimum(0);
+        jspnCantidad.setModel(modeloSpinner);
+
+    }
+    boolean desbloquearAceptarProductos() {
+        if (Integer.valueOf(jspnCantidad.getValue().toString()) > 0) {
+            jbtnAceptar.setEnabled(true);
+            return true;
+        }
+        jbtnAceptar.setEnabled(false);
+        return false;
+
+    }
+
+    boolean bloquearTamaños() {
+
+        jcbxTallas.setEnabled(false);
+        jtxtCantidad.setEnabled(false);
+        jcbxColor.setEnabled(false);
+        jbtnGuardar.setEnabled(false);
+        jbtnEditar.setEnabled(false);
+        jbtnEliminar.setEnabled(false);
+        return true;
+
     }
 
     public void cargarCombobox() {
@@ -86,13 +120,49 @@ public class Pedidos extends javax.swing.JFrame {
                 return false;
             }
 //            limpiarBloquearPedidos();
-            JOptionPane.showMessageDialog(this,"Validación correcta");
+            JOptionPane.showMessageDialog(this, "Validación correcta");
+            desbloquearTamaños();
             return true;
         } catch (Exception e) {
         }
         return true;
         //if(Integer.valueOf(jspnCantidad.getValue().toString())){
         //} else {
+    }
+
+    public void selecionBloqueada() {
+
+        try {
+
+            if (jchbAmarillo.isSelected()) {
+                jtxtAmarillo.setEnabled(true);
+            } else {
+                jtxtAmarillo.setEnabled(false);
+            }
+            if (jchbAzul.isSelected()) {
+                jtxtAzul.setEnabled(true);
+            } else {
+                jtxtAzul.setEnabled(false);
+            }
+            if (jchbRojo.isSelected()) {
+                jtxtRojo.setEnabled(true);
+
+            } else {
+                jtxtRojo.setEnabled(false);
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
+    boolean desbloquearTamaños() {
+        System.out.println("Dentro del metodo de desbloquear tamaño");
+        jcbxTallas.setEnabled(true);
+        jtxtCantidad.setEnabled(true);
+        jcbxColor.setEnabled(true);
+        jbtnGuardar.setEnabled(true);
+
+        return true;
     }
 
     /**
@@ -122,14 +192,14 @@ public class Pedidos extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jcbxTallas = new javax.swing.JComboBox<>();
-        jTextField4 = new javax.swing.JTextField();
+        jtxtCantidad = new javax.swing.JTextField();
         jcbxColor = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        jbtnGuardar = new javax.swing.JButton();
+        jbtnEditar = new javax.swing.JButton();
+        jbtnEliminar = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel3 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
@@ -149,14 +219,35 @@ public class Pedidos extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel3.setText("Cantidad");
 
+        jspnCantidad.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jspnCantidadStateChanged(evt);
+            }
+        });
+
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel4.setText("Colores:");
 
         jchbAmarillo.setText("Amarillo");
+        jchbAmarillo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jchbAmarilloActionPerformed(evt);
+            }
+        });
 
         jchbAzul.setText("Azul");
+        jchbAzul.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jchbAzulActionPerformed(evt);
+            }
+        });
 
         jchbRojo.setText("Rojo");
+        jchbRojo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jchbRojoActionPerformed(evt);
+            }
+        });
 
         jbtnAceptar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jbtnAceptar.setIcon(new javax.swing.ImageIcon("D:\\Programacion\\Programacion3\\ProyectoManejosw\\src\\image\\comprobado.png")); // NOI18N
@@ -187,7 +278,7 @@ public class Pedidos extends javax.swing.JFrame {
                                         .addGap(36, 36, 36)
                                         .addComponent(jLabel3)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jspnCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jspnCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addComponent(jtxtAzul, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -245,9 +336,9 @@ public class Pedidos extends javax.swing.JFrame {
 
         jcbxTallas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+        jtxtCantidad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
+                jtxtCantidadActionPerformed(evt);
             }
         });
 
@@ -259,14 +350,14 @@ public class Pedidos extends javax.swing.JFrame {
 
         jLabel8.setText("Color");
 
-        jButton2.setIcon(new javax.swing.ImageIcon("D:\\Programacion\\Programacion3\\ProyectoManejosw\\src\\image\\application_double.png")); // NOI18N
-        jButton2.setText("Guardar");
+        jbtnGuardar.setIcon(new javax.swing.ImageIcon("D:\\Programacion\\Programacion3\\ProyectoManejosw\\src\\image\\application_double.png")); // NOI18N
+        jbtnGuardar.setText("Guardar");
 
-        jButton3.setIcon(new javax.swing.ImageIcon("D:\\Programacion\\Programacion3\\ProyectoManejosw\\src\\image\\application_edit (1).png")); // NOI18N
-        jButton3.setText("Editar");
+        jbtnEditar.setIcon(new javax.swing.ImageIcon("D:\\Programacion\\Programacion3\\ProyectoManejosw\\src\\image\\application_edit (1).png")); // NOI18N
+        jbtnEditar.setText("Editar");
 
-        jButton4.setIcon(new javax.swing.ImageIcon("D:\\Programacion\\Programacion3\\ProyectoManejosw\\src\\image\\application_delete.png")); // NOI18N
-        jButton4.setText("Eliminar");
+        jbtnEliminar.setIcon(new javax.swing.ImageIcon("D:\\Programacion\\Programacion3\\ProyectoManejosw\\src\\image\\application_delete.png")); // NOI18N
+        jbtnEliminar.setText("Eliminar");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -282,7 +373,7 @@ public class Pedidos extends javax.swing.JFrame {
                         .addGap(27, 27, 27)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jtxtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(34, 34, 34)
@@ -292,11 +383,11 @@ public class Pedidos extends javax.swing.JFrame {
                                 .addComponent(jLabel8))))
                     .addComponent(jLabel5)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addComponent(jbtnGuardar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)
+                        .addComponent(jbtnEditar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4))
+                        .addComponent(jbtnEliminar))
                     .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -307,7 +398,7 @@ public class Pedidos extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jcbxTallas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtxtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jcbxColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -316,9 +407,9 @@ public class Pedidos extends javax.swing.JFrame {
                     .addComponent(jLabel8))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(jbtnGuardar)
+                    .addComponent(jbtnEditar)
+                    .addComponent(jbtnEliminar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -388,14 +479,37 @@ public class Pedidos extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void jtxtCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtCantidadActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_jtxtCantidadActionPerformed
 
     private void jbtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAceptarActionPerformed
         // TODO add your handling code here:
         validarProductos(true);
     }//GEN-LAST:event_jbtnAceptarActionPerformed
+
+    private void jspnCantidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jspnCantidadStateChanged
+        // TODO add your handling code here:
+        desbloquearAceptarProductos();
+    }//GEN-LAST:event_jspnCantidadStateChanged
+
+    private void jchbAmarilloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jchbAmarilloActionPerformed
+        // TODO add your handling code here:
+
+        selecionBloqueada();
+    }//GEN-LAST:event_jchbAmarilloActionPerformed
+
+    private void jchbAzulActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jchbAzulActionPerformed
+        // TODO add your handling code here:
+
+        selecionBloqueada();
+    }//GEN-LAST:event_jchbAzulActionPerformed
+
+    private void jchbRojoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jchbRojoActionPerformed
+        // TODO add your handling code here:
+
+        selecionBloqueada();
+    }//GEN-LAST:event_jchbRojoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -434,9 +548,6 @@ public class Pedidos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -453,8 +564,10 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JButton jbtnAceptar;
+    private javax.swing.JButton jbtnEditar;
+    private javax.swing.JButton jbtnEliminar;
+    private javax.swing.JButton jbtnGuardar;
     private javax.swing.JComboBox<String> jcbxColor;
     private javax.swing.JComboBox<String> jcbxProductos;
     private javax.swing.JComboBox<String> jcbxTallas;
@@ -464,6 +577,7 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JSpinner jspnCantidad;
     private javax.swing.JTextField jtxtAmarillo;
     private javax.swing.JTextField jtxtAzul;
+    private javax.swing.JTextField jtxtCantidad;
     private javax.swing.JTextField jtxtRojo;
     // End of variables declaration//GEN-END:variables
 }
