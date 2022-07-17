@@ -10,6 +10,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -25,7 +26,9 @@ public class Pedidos extends javax.swing.JFrame {
     DefaultComboBoxModel tallasp;
     SpinnerNumberModel modeloSpinner;
     DefaultListModel modeloLista;
+    DefaultTableModel modelot;
     LinkedList<Producto> productos;
+    Integer fila;
     int restaAmarillo = 0;
     int restaAzul = 0;
     int restaRojo = 0;
@@ -38,10 +41,12 @@ public class Pedidos extends javax.swing.JFrame {
         tallasp = new DefaultComboBoxModel();
         modeloSpinner = new SpinnerNumberModel();
         modeloLista = new DefaultListModel();
+        modelot = new DefaultTableModel();
         productos = new LinkedList<>();
         limiteSpiner();
         agregarListaProductos();
         cargarListaCostos();
+        cargarTituloTabla();
         cargarCombobox();
         selecionBloqueada();
         bloquearTamaños();
@@ -67,6 +72,50 @@ public class Pedidos extends javax.swing.JFrame {
         }
 
         jlstCostos.setModel(modeloLista);
+    }
+
+    boolean estadoEditarEliminar(boolean estado) {
+        jbtnEditar.setEnabled(estado);
+        jbtnEliminar.setEnabled(estado);
+        return true;
+    }
+
+    boolean cargarTextoTamaños(int estado) {
+        if (estado == 1) {
+            this.estadoEditarEliminar(false);
+            return true;
+        }
+        this.estadoEditarEliminar(true);
+
+        if (jtblDatos.getSelectedRow() != -1) {
+            fila = jtblDatos.getSelectedRow();
+            System.out.println("\n\n" + jtblDatos.getValueAt(fila, 0).toString());
+            jcbxProductos.setSelectedItem(jtblDatos.getValueAt(fila, 0).toString());
+            cargarRestaColores(jtblDatos.getValueAt(fila, 2).toString(), jtblDatos.getValueAt(fila, 1).toString());
+            jtxtCantidad.setText(jtblDatos.getValueAt(fila, 1).toString());
+            jcbxColor.setSelectedItem(jtblDatos.getValueAt(fila, 2).toString());
+            jcbxTallas.setSelectedItem(jtblDatos.getValueAt(fila, 3).toString());
+
+            jbtnGuardar.setEnabled(false);
+        }
+        return true;
+    }
+
+    boolean cargarRestaColores(String color, String cantidad) {
+        System.out.println("Si entro cargar Resta");
+        if (color.equals("Amarillo")) {
+            restaAmarillo = Integer.valueOf(cantidad);
+            return true;
+        }
+        if (color.equals("Azul")) {
+            restaAzul = Integer.valueOf(cantidad);
+            return true;
+        }
+        if (color.equals("Rojo")) {
+            restaRojo = Integer.valueOf(cantidad);
+            return true;
+        }
+        return false;
     }
 
     void agregarListaProductos() {
@@ -195,6 +244,127 @@ public class Pedidos extends javax.swing.JFrame {
         return true;
     }
 
+    public boolean validarTamaños() {
+        try {
+            int valCantidad = Integer.valueOf(jtxtCantidad.getText());
+            System.out.println(jcbxColor.getSelectedItem().toString());
+            System.out.println(valCantidad);
+            System.out.println("Resta : " + restaAmarillo + "   ");
+
+            if (jcbxColor.getSelectedItem().toString() == "Amarillo") {
+                if (valCantidad <= restaAmarillo) {
+                    restaAmarillo = restaAmarillo - valCantidad;
+                    System.out.println("Resta Amarillo : " + restaAmarillo);
+                    return true;
+                }
+                JOptionPane.showMessageDialog(null, "VALOR MAXIMO EXCEDIDO\n" + "Cantidad Restante: " + restaAmarillo);
+                return false;
+            }
+            if (jcbxColor.getSelectedItem().toString() == "Azul") {
+                if (valCantidad <= restaAzul) {
+                    restaAzul = restaAzul - valCantidad;
+                    System.out.println("Resta Azul : " + restaAzul);
+                    return true;
+                    // Guardado de la tabla
+                }
+                JOptionPane.showMessageDialog(null, "VALOR MAXIMO EXCEDIDO\n" + "Cantidad Restante: " + restaAzul);
+                return false;
+            }
+            if (jcbxColor.getSelectedItem().toString() == "Rojo") {
+                if (valCantidad <= restaRojo) {
+                    restaRojo = restaRojo - valCantidad;
+                    System.out.println("Resta Rojo : " + restaRojo);
+                    return true;
+                    // Guardado de la tabla
+                }
+                JOptionPane.showMessageDialog(null, "VALOR MAXIMO EXCEDIDO\n" + "Cantidad Restante: " + restaRojo);
+                return false;
+            }
+        } catch (Exception e) {
+
+        }
+        return true;
+    }
+
+    String[] vectorDatos() {
+        String[] datos = new String[5];
+        int total = 0;
+
+        int valor = 0;
+        datos[0] = jcbxProductos.getSelectedItem().toString();
+        datos[1] = jtxtCantidad.getText();
+        datos[2] = jcbxColor.getSelectedItem().toString();
+        datos[3] = jcbxTallas.getSelectedItem().toString();
+        System.out.println("AgregarTabla");
+        for (Producto producto : productos) {
+            try {
+                if (jcbxProductos.getSelectedItem().toString().equals(producto.getNombre())) {
+                    if (jcbxTallas.getSelectedItem().toString().equals("S")) {
+                        datos[4] = String.valueOf(Integer.valueOf(jtxtCantidad.getText()) * producto.getCostoS());
+                    }
+                    if (jcbxTallas.getSelectedItem().toString().equals("M")) {
+                        datos[4] = String.valueOf(Integer.valueOf(jtxtCantidad.getText()) * producto.getCostoM());
+                    }
+                    if (jcbxTallas.getSelectedItem().toString().equals("L")) {
+                        datos[4] = String.valueOf(Integer.valueOf(jtxtCantidad.getText()) * producto.getCostoL());
+                    }
+
+                }
+
+            } catch (Exception e) {
+
+            }
+        }
+
+        return datos;
+    }
+
+    public void cargarTituloTabla() {
+        String titulosTabla[] = {"Producto", "Cantidad", "Color ", "Tamano ", "Valor"};
+        this.modelot = new DefaultTableModel(null, titulosTabla);
+        jtblDatos.setModel(modelot);
+    }
+
+    boolean guardarDatosTabla() {
+        modelot.addRow(vectorDatos());
+        jtblDatos.setModel(modelot);
+        return true;
+    }
+
+    boolean modificarTabla() {
+        try {
+
+            String[] registro = this.vectorDatos();
+            System.out.println(registro);
+            // Error
+            for (int i = 0; i < registro.length; i++) {
+                jtblDatos.setValueAt(registro[i], fila, i);
+            }
+
+            jbtnGuardar.setEnabled(true);
+            jtxtCantidad.setText("");
+            estadoEditarEliminar(false);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Entro en el catch");
+        }
+        return true;
+    }
+
+    boolean limpiarCantidadTamaño() {
+        jtxtCantidad.setText("");
+        return true;
+    }
+
+    boolean eliminarFila() {
+        cargarTextoTamaños(estado);
+        modelot.removeRow(fila);
+        limpiarCantidadTamaño();
+        jbtnGuardar.setEnabled(true);
+        estadoEditarEliminar(false);
+        return true;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -236,7 +406,7 @@ public class Pedidos extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jtblDatos = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -384,12 +554,27 @@ public class Pedidos extends javax.swing.JFrame {
 
         jbtnGuardar.setIcon(new javax.swing.ImageIcon("D:\\Programacion\\Programacion3\\ProyectoManejosw\\src\\image\\application_double.png")); // NOI18N
         jbtnGuardar.setText("Guardar");
+        jbtnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnGuardarActionPerformed(evt);
+            }
+        });
 
         jbtnEditar.setIcon(new javax.swing.ImageIcon("D:\\Programacion\\Programacion3\\ProyectoManejosw\\src\\image\\application_edit (1).png")); // NOI18N
         jbtnEditar.setText("Editar");
+        jbtnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnEditarActionPerformed(evt);
+            }
+        });
 
         jbtnEliminar.setIcon(new javax.swing.ImageIcon("D:\\Programacion\\Programacion3\\ProyectoManejosw\\src\\image\\application_delete.png")); // NOI18N
         jbtnEliminar.setText("Eliminar");
+        jbtnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnEliminarActionPerformed(evt);
+            }
+        });
 
         jlstCostos.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -468,7 +653,7 @@ public class Pedidos extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel9.setText("Línea de pedido");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtblDatos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -479,7 +664,12 @@ public class Pedidos extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jtblDatos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jtblDatosMousePressed(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jtblDatos);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -562,6 +752,29 @@ public class Pedidos extends javax.swing.JFrame {
         selecionBloqueada();
     }//GEN-LAST:event_jchbRojoActionPerformed
 
+    private void jbtnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnGuardarActionPerformed
+        // TODO add your handling code here:
+        if (validarTamaños()) {
+            guardarDatosTabla();
+        }
+    }//GEN-LAST:event_jbtnGuardarActionPerformed
+
+    private void jtblDatosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtblDatosMousePressed
+        // TODO add your handling code here:
+        cargarTextoTamaños(estado);
+    }//GEN-LAST:event_jtblDatosMousePressed
+
+    private void jbtnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnEditarActionPerformed
+        // TODO add your handling code here:
+        validarTamaños();
+        modificarTabla();
+    }//GEN-LAST:event_jbtnEditarActionPerformed
+
+    private void jbtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnEliminarActionPerformed
+        // TODO add your handling code here:
+        eliminarFila();
+    }//GEN-LAST:event_jbtnEliminarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -615,7 +828,6 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JButton jbtnAceptar;
     private javax.swing.JButton jbtnEditar;
     private javax.swing.JButton jbtnEliminar;
@@ -628,6 +840,7 @@ public class Pedidos extends javax.swing.JFrame {
     private javax.swing.JCheckBox jchbRojo;
     private javax.swing.JList<String> jlstCostos;
     private javax.swing.JSpinner jspnCantidad;
+    private javax.swing.JTable jtblDatos;
     private javax.swing.JTextField jtxtAmarillo;
     private javax.swing.JTextField jtxtAzul;
     private javax.swing.JTextField jtxtCantidad;
