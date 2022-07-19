@@ -37,13 +37,13 @@ public class Login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Iniciar seccion");
+        jButton1.setText("Iniciar sesión");
 
         jButton2.setText("Cancelar");
 
         jLabel1.setText("Usuario");
 
-        jLabel2.setText("Contrasena");
+        jLabel2.setText("Contraseña");
 
         jLabel3.setText("LOGIN");
 
@@ -52,7 +52,7 @@ public class Login extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(66, Short.MAX_VALUE)
+                .addContainerGap(70, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))
