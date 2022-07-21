@@ -17,12 +17,20 @@ import javax.swing.JOptionPane;
  * @author Erik
  */
 public class RegistroClientes extends javax.swing.JFrame {
+    
+    
 
     /**
      * Creates new form RegistroClientes
      */
     public RegistroClientes() {
         initComponents();
+    
+    }
+    public void abrirVentana(){
+        Pedidos pedi = new Pedidos();
+            pedi.setVisible(true);
+            this.dispose();
     }
 
     /**
@@ -91,7 +99,7 @@ public class RegistroClientes extends javax.swing.JFrame {
         });
 
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/boton-eliminar.png"))); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon("C:\\Users\\user\\Documents\\NetBeansProjects\\ProyectoManejosw\\src\\image\\boton-eliminar.png")); // NOI18N
         jButton1.setText("Cancelar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -100,7 +108,7 @@ public class RegistroClientes extends javax.swing.JFrame {
         });
 
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/comprobado.png"))); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon("C:\\Users\\user\\Documents\\NetBeansProjects\\ProyectoManejosw\\src\\image\\comprobado.png")); // NOI18N
         jButton2.setText("Registrar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -213,6 +221,7 @@ public class RegistroClientes extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         guardarClientes();
+        abrirVentana();
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
